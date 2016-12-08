@@ -1,30 +1,40 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using MediatR;
+using MediatrDemo.Notifications;
+using MediatrDemo.Requests;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MediatrDemo.Controllers
 {
     public class HomeController : Controller
     {
+        public HomeController(IMediator mediator, IMessageSource messageSource)
+        {
+            _mediator = mediator;
+            _messageSource = messageSource;
+        }
+
+        private readonly IMediator _mediator;
+        private readonly IMessageSource _messageSource;
+
         public IActionResult Index()
         {
-            return View();
+            return View(_messageSource.Messages);
         }
 
-        public IActionResult About()
+        public async Task<IActionResult> Publish()
         {
-            ViewData["Message"] = "Your application description page.";
-
-            return View();
+            var notification = new DemoNotification() { Message = $"event published on {DateTime.Now}" };
+            await _mediator.PublishAsync(notification);
+            return RedirectToAction("Index");
         }
 
-        public IActionResult Contact()
+        public async Task<IActionResult> Send()
         {
-            ViewData["Message"] = "Your contact page.";
-
-            return View();
+            var demoRequest = new DemoRequest() { Message = $"event sent on {DateTime.Now}" };
+            await _mediator.SendAsync(demoRequest);
+            return RedirectToAction("Index");
         }
 
         public IActionResult Error()

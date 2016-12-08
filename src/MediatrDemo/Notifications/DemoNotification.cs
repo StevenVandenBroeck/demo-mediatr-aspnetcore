@@ -3,7 +3,7 @@ using MediatR;
 
 namespace MediatrDemo.Notifications
 {
-    public class AboutNotification : IAsyncNotification
+    public class DemoNotification : IAsyncNotification
     {
         public string Message { get; set; }
     }

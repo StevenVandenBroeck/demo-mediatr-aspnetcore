@@ -4,18 +4,18 @@ using MediatR;
 
 namespace MediatrDemo.Notifications
 {
-    public class AboutNotificationHandler : IAsyncNotificationHandler<AboutNotification>
+    public class DemoNotificationHandler2 : IAsyncNotificationHandler<DemoNotification>
     {
-        public AboutNotificationHandler(IMessageSource messageSource)
+        public DemoNotificationHandler2(IMessageSource messageSource)
         {
             _messageSource = messageSource;
         }
 
         private readonly IMessageSource _messageSource;
 
-        public Task Handle(AboutNotification notification)
+        public Task Handle(DemoNotification notification)
         {
-            var msg = $"{this.GetType().Name} - {notification.Message}";
+            var msg = $"From {this.GetType().Name} - {notification.Message}";
             _messageSource.Add(msg);
             return Task.FromResult(0);
         }
