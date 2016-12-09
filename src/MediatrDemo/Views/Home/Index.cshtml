@@ -7,7 +7,7 @@
 
 <p>This demonstrates the use of the <a href="https://github.com/jbogard/MediatR">Mediatr</a> library.</p>
 
-<p style="text-decoration: underline">Events</p>
+<p><span style="text-decoration: underline">Events</span>   (<a asp-controller="Home" asp-action="Index">Refresh</a>)</p>
 @foreach ( var item in Model )
 {
     <div>
@@ -21,7 +21,7 @@
     |
     <a asp-controller="Home" asp-action="SendEvent">Send Event</a>
     |
-    <a asp-controller="Home" asp-action="PublishAsyncEvent">Publih Async Event</a>
+    <a asp-controller="Home" asp-action="PublishAsyncEvent">Publish Async Event</a>
     |
     <a asp-controller="Home" asp-action="SendAsyncEvent">Send Async Event</a>
 </p>

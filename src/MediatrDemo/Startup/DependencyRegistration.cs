@@ -15,8 +15,11 @@ namespace MediatrDemo
 
             services.AddScoped<IAsyncNotificationHandler<DemoNotification>, DemoNotificationHandler1>();
             services.AddScoped<IAsyncNotificationHandler<DemoNotification>, DemoNotificationHandler2>();
+            services.AddScoped<IAsyncNotificationHandler<DemoAsyncNotification>, DemoAsyncNotificationHandler1>();
+            services.AddScoped<IAsyncNotificationHandler<DemoAsyncNotification>, DemoAsyncNotificationHandler2>();
 
             services.AddScoped<IAsyncRequestHandler<DemoRequest, bool>, DemoRequestHandler>();
+            services.AddScoped<IAsyncRequestHandler<DemoAsyncRequest, bool>, DemoAsyncRequestHandler>();
 
             services.AddScoped<SingleInstanceFactory>(p => t => p.GetRequiredService(t));
             services.AddScoped<MultiInstanceFactory>(p => t => p.GetRequiredServices(t));
