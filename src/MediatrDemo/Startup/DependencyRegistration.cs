@@ -22,22 +22,11 @@ namespace MediatrDemo
             services.AddScoped<IAsyncRequestHandler<DemoRequest, bool>, DemoRequestHandler>();
             services.AddScoped<IAsyncRequestHandler<DemoAsyncRequest, bool>, DemoAsyncRequestHandler>();
 
-            services.AddScoped<IEventPublisher, EventPublisher>();
             services.AddScoped<IAsyncNotificationHandler<DemoAsyncAppEvent>, DemoAsyncAppEventHandler1>();
             services.AddScoped<IAsyncNotificationHandler<DemoAsyncAppEvent>, DemoAsyncAppEventHandler2>();
             services.AddScoped<IAsyncNotificationHandler<BaseAsyncAppEvent>, BaseAsyncAppEventHandler>();
 
-            services.AddScoped<SingleInstanceFactory>(p => t => p.GetRequiredService(t));
-            services.AddScoped<MultiInstanceFactory>(p => t => p.GetRequiredServices(t));
-
-            services.AddScoped<IMediator, Mediator>();
-
             return services;
-        }
-
-        private static IEnumerable<object> GetRequiredServices(this IServiceProvider provider, Type serviceType)
-        {
-            return (IEnumerable<object>)provider.GetRequiredService(typeof(IEnumerable<>).MakeGenericType(serviceType));
         }
     }
 }

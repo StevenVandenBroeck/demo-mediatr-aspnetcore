@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using MediatrDemo.Eventing;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -28,6 +26,10 @@ namespace MediatrDemo
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddBusinessServices();
+
+            services.AddEventing(opt =>
+                opt.RegisterExceptionHandler<MyEventingExceptionHandler>()
+            );
 
             // Add framework services.
             services.AddMvc();

@@ -1,23 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using Microsoft.Extensions.Options;
 
 namespace MediatrDemo.Eventing
 {
     public class EventPublisher : IEventPublisher
     {
-        public EventPublisher(IMediator mediator, IMessageSource messageSource)
+        public EventPublisher(IMediator mediator, IOptions<EventingOptions> options, IEventingExceptionHandler exceptionHandler)
         {
             _mediator = mediator;
-            _messageSource = messageSource;
-            
+            _options = options.Value;
+            _exceptionHandler = exceptionHandler;
         }
 
         private readonly IMediator _mediator;
-        private readonly IMessageSource _messageSource;
+        private readonly EventingOptions _options;
+        private readonly IEventingExceptionHandler _exceptionHandler;
 
         public void Publish(AppEvent appEvent)
         {
@@ -26,8 +26,6 @@ namespace MediatrDemo.Eventing
 
         public async Task PublishAsync(AsyncAppEvent appEvent)
         {
-            _messageSource.Add($"Publishing event via {this.GetType().Name} (Thread {Thread.CurrentThread.ManagedThreadId})");
-
             await Task.Run(() => {
                 try
                 {
@@ -35,15 +33,25 @@ namespace MediatrDemo.Eventing
                 }
                 catch ( Exception ex )
                 {
-                    _messageSource.Add($"exception caught in {this.GetType().Name} (Thread {Thread.CurrentThread.ManagedThreadId}) : {ex.Message})");
+                    _exceptionHandler.Handle(ex);
                     return Task.FromException(ex);
                 }
             });
         }
 
-        public Task PublishAsync(CancellableAsyncAppEvent appEvent, CancellationToken cancellationToken)
+        public async Task PublishAsync(CancellableAsyncAppEvent appEvent, CancellationToken cancellationToken)
         {
-            return _mediator.PublishAsync(appEvent, cancellationToken);
+            await Task.Run(() => {
+                try
+                {
+                    return _mediator.PublishAsync(appEvent, cancellationToken);
+                }
+                catch ( Exception ex )
+                {
+                    _exceptionHandler.Handle(ex);
+                    return Task.FromException(ex);
+                }
+            });
         }
     }
 }
