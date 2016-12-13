@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using MediatR;
+using MediatrDemo.Eventing;
 using MediatrDemo.Notifications;
 using MediatrDemo.Requests;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,6 +21,11 @@ namespace MediatrDemo
 
             services.AddScoped<IAsyncRequestHandler<DemoRequest, bool>, DemoRequestHandler>();
             services.AddScoped<IAsyncRequestHandler<DemoAsyncRequest, bool>, DemoAsyncRequestHandler>();
+
+            services.AddScoped<IEventPublisher, EventPublisher>();
+            services.AddScoped<IAsyncNotificationHandler<DemoAsyncAppEvent>, DemoAsyncAppEventHandler1>();
+            services.AddScoped<IAsyncNotificationHandler<DemoAsyncAppEvent>, DemoAsyncAppEventHandler2>();
+            services.AddScoped<IAsyncNotificationHandler<BaseAsyncAppEvent>, BaseAsyncAppEventHandler>();
 
             services.AddScoped<SingleInstanceFactory>(p => t => p.GetRequiredService(t));
             services.AddScoped<MultiInstanceFactory>(p => t => p.GetRequiredServices(t));

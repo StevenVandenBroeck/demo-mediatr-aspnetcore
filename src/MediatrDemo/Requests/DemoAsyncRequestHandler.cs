@@ -18,7 +18,7 @@ namespace MediatrDemo.Requests
         {
             Thread.Sleep(5000);
 
-            var msg = $"From {this.GetType().Name} - {message.Message}";
+            var msg = $"Handled in {this.GetType().Name} (Thread {Thread.CurrentThread.ManagedThreadId}) - {message.Message})";
             _messageSource.Add(msg);
             return Task.FromResult(true);
         }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 
@@ -15,7 +16,7 @@ namespace MediatrDemo.Requests
 
         public Task<bool> Handle(DemoRequest message)
         {
-            var msg = $"From {this.GetType().Name} - {message.Message}";
+            var msg = $"Handled in {this.GetType().Name} (Thread {Thread.CurrentThread.ManagedThreadId}) - {message.Message})";
             _messageSource.Add(msg);
             return Task.FromResult(true);
         }

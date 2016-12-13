@@ -18,7 +18,7 @@ namespace MediatrDemo.Notifications
         {
             Thread.Sleep(5000);
 
-            var msg = $"From {this.GetType().Name} - {notification.Message}";
+            var msg = $"Handled in {this.GetType().Name} (Thread {Thread.CurrentThread.ManagedThreadId}) - {notification.Message})";
             _messageSource.Add(msg);
             return Task.CompletedTask;
         }

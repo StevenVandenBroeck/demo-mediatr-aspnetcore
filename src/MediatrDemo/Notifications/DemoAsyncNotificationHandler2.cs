@@ -17,9 +17,9 @@ namespace MediatrDemo.Notifications
         public Task Handle(DemoAsyncNotification notification)
         {
             Thread.Sleep(2000);
-            throw new Exception("Error in async handler 2");
+            throw new Exception($"Error thrown in {this.GetType().Name} (Thread {Thread.CurrentThread.ManagedThreadId})");
 
-            var msg = $"From {this.GetType().Name} - {notification.Message}";
+            var msg = $"Handled in {this.GetType().Name} (Thread {Thread.CurrentThread.ManagedThreadId}) - {notification.Message})";
             _messageSource.Add(msg);
             return Task.CompletedTask;
         }
